@@ -7,6 +7,263 @@
     <title>Document</title>
 </head>
 <body>
-    
+
+    <form id="frmShow">
+        <label>Form Datos</label>
+        <div>
+            <label>Filtrar Por:</label>
+            <select onchange="OnFilterChange()" id="TypeFilter">
+                <option value="all">Todos</option>
+                <option value="hero">Heroes</option>
+                <option value="villan">Villanos</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Calcular Edad Promedio:</label>
+            <input type="text" id="txtPromAge">
+            <input type="button" value="Calcular" onclick="OnAgeClick()">
+        </div>
+
+        <label>Mostrar Columnas</label>
+        <div>
+            <input type="checkbox" value="id" checked="true" id="chkbId">ID
+            <input type="checkbox" value="name" checked="true">Nombre
+            <input type="checkbox" value="surename" checked="true">Apellido
+            <input type="checkbox" value="age" checked="true">Edad
+            <input type="checkbox" value="ego" checked="true">AlterEgo
+            <input type="checkbox" value="city" checked="true">Ciudad
+            <input type="checkbox" value="published" checked="true">Publicado
+            <input type="checkbox" value="enemy" checked="true">Enemigo
+            <input type="checkbox" value="robs" checked="true">Robos
+            <input type="checkbox" value="murders" checked="true">Asesinatos
+        </div>
+
+        <div>
+            <table>
+                <thead id = "theadPersonas">
+                    <tr>
+                        <th class="id"><input type="button" value="ID"></th>
+                        <th class="name"><input type="button" value="Nombre"></th>
+                        <th class="surename"><input type="button" value="Apellido"></th>
+                        <th class="age"><input type="button" value="Edad"></th>
+                        <th class="ego"><input type="button" value="AlterEgo"></th>
+                        <th class="city"><input type="button" value="Ciudad"></th>
+                        <th class="published"><input type="button" value="Publicado"></th>
+                        <th class="enemy"><input type="button" value="Enemigo"></th>
+                        <th class="robs"><input type="button" value="Robos"></th>
+                        <th class="murders"><input type="button" value="Asesinatos"></th>
+                    </tr>
+                </thead>
+
+                <tbody id = "tbodyPersonas">
+                </tbody>
+
+            </table>
+        </div>
+        <div><input type="button" value="Agregar" onclick="SwitchViews()"></div>
+    </form>
+
+    <form style="display: none;" id="frmAdd">
+        <div><label>ID</label><input type="number" id="txtAddId"></div>
+        <div><label>Nombre</label><input type="text" id="txtAddName"></div>
+        <div><label>Apellido</label><input type="text" id="txtAddSurname"></div>
+        <div><label>Edad</label><input type="number" id="txtAddAge"></div>
+        <div><label>Tipo</label>
+            <select id="cmbAddType" onchange="SwitchLabel()">
+                <option value="employee">Empleado</option>
+                <option value="client">Cliente</option>
+        </select></div>
+        <div><label id="lblAddType">Sueldo</label><input type="number" id="txtAddAtribute"></div>
+        <div><input type="button" value="Agregar" onclick="NewPersona()"><input type="button" value="Cancelar" onclick="SwitchViews()"></div>
+    </form>
+
 </body>
+<!--Scripts de Clase-->
+<script>
+    const jsonInicial = '[{"id":1, "nombre":"Clark", "apellido":"Kent", "edad":45, "alterego":"Superman", "ciudad":"Metropolis","publicado":2002},{"id":2, "nombre":"Bruce", "apellido":"Wayne", "edad":35, "alterego":"Batman", "ciudad":"Gotica","publicado":20012},{"id":3, "nombre":"Bart", "apellido":"Alen", "edad":30, "alterego":"Flash", "ciudad":"Central","publicado":2017},{"id":4, "nombre":"Lex", "apellido":"Luthor", "edad":18, "enemigo":"Superman", "robos":500,"asesinatos":7},{"id":5, "nombre":"Harvey", "apellido":"Dent", "edad":20, "enemigo":"Batman", "robos":750,"asesinatos":2},{"id":666, "nombre":"Celina", "apellido":"kyle", "edad":23, "enemigo":"Batman", "robos":25,"asesinatos":1}]';
+    const arrayJSON = JSON.parse(jsonInicial);
+    const arrayPersona = [];
+    const arrayReducido = [];
+
+    class Persona
+    {
+        constructor(id,name,surname,age)
+        {
+            this.id = id;
+            this.nombre = name;
+            this.apellido = surname;
+            this.edad = age;
+        };
+    };
+
+    class Heroe extends Persona
+    {
+        constructor(id,name,surname,age,ego,city,published)
+        {
+            super(id,name,surname,age);
+            this.alterego = ego;
+            this.ciudad = city;
+            this.publicado = published;
+        };
+    };
+
+    class Villano extends Persona
+    {
+        constructor(id,name,surname,age,enemy,robs,murders)
+        {
+            super(id,name,surname,age);
+            this.enemigo = enemy;
+            this.robos = robs;
+            this.asesinatos = murders;
+        };
+    };
+
+    function ObjectToPersona(array)
+    {
+        let hero;
+        let villan;
+
+        array.map(person=>{
+            if("alterego" in person)
+            {
+                hero = new Heroe(person.id,person.nombre,person.apellido,person.edad,person.alterego,person.ciudad,person.publicado);
+                arrayPersona.push(hero);
+            }
+            else if("enemigo" in person)
+            {   
+                villan = new Villano(person.id,person.nombre,person.apellido,person.edad,person.enemigo,person.robos,person.asesinatos);
+                arrayPersona.push(villan)
+            }
+            return
+        })
+    }
+</script>
+<!--Scripts de Render-->
+<script>
+    const checkboxes = document.querySelectorAll('#frmShow input[type="checkbox"]');
+
+    checkboxes.forEach((checkbox) => {checkbox.addEventListener('change', () => RenderCheckBoxes(checkbox))})
+
+    function RenderCheckBoxes(checkbox)
+    {
+        console.log("called");
+        if (checkbox.checked) {
+            const columnName = checkbox.value;
+            const column = document.querySelectorAll(`.${columnName}`);
+            column.forEach((cell) => {
+                cell.style.display = '';
+            });
+        } else {
+            const columnName = checkbox.value;
+            const column = document.querySelectorAll(`.${columnName}`);
+            column.forEach((cell) => {
+            cell.style.display = 'none';
+        })}
+    }
+
+    function DrawTableFromArray(array)
+    {
+        let tabla = document.getElementById("tbodyPersonas");
+        tabla.innerHTML = '';
+        array.map(person=>{
+            const tr = document.createElement('tr');
+            let row = `
+                <td class="id">${person.id}</td>
+                <td class="name">${person.nombre}</td>
+                <td class="surename">${person.apellido}</td>
+                <td class="age">${person.edad}</td>
+            `
+            if("alterego" in person)
+            {
+                row += `
+                <td class="ego">${person.alterego}</td>
+                <td class="city">${person.ciudad}</td>
+                <td class="published">${person.publicado}</td>
+                <td class="enemy">-</td>
+                <td class="robs">-</td>
+                <td class="murders">-</td>
+                `
+            }
+            else if("enemigo" in person)
+            {
+                row += `
+                <td class="ego">-</td>
+                <td class="city">-</td>
+                <td class="published">-</td>
+                <td class="enemy">${person.enemigo}</td>
+                <td class="robs">${person.robos}</td>
+                <td class="murders">${person.asesinatos}</td>
+                `
+            }
+            tr.innerHTML = row;
+            tabla.append(tr);
+        })
+        checkboxes.forEach((checkbox) => RenderCheckBoxes(checkbox));
+    }
+
+    function OnFilterChange()
+    {
+        let cmbType = document.getElementById("TypeFilter");
+
+        while(arrayReducido.length) {
+                arrayReducido.pop();
+        }
+
+        if(cmbType.value=="all")
+        {
+
+            arrayPersona.map(person => {
+                arrayReducido.push(person);
+                return;
+            })
+        }
+        else if(cmbType.value == "hero")
+        {
+            arrayPersona.map(person =>{
+                if("alterego" in person)
+                {
+                    arrayReducido.push(person);
+                }
+                return;
+            });
+           
+        }
+        else if(cmbType.value == "villan")
+        {
+            arrayPersona.map(person =>{
+                if("enemigo" in person)
+                {
+                    arrayReducido.push(person);
+                }
+                return;
+            });
+        }
+        DrawTableFromArray(arrayReducido);
+    }
+
+    function OnAgeClick()
+    {
+        
+        let val = arrayReducido.reduce((accumulator, person)=>
+        {
+            return accumulator + person.edad;
+        },0);
+
+        let txtEdad = document.getElementById("txtPromAge");
+        txtEdad.value = Math.round(val/arrayReducido.length);
+    }
+
+</script>
+<!--Scripts de Inicio-->
+<script>
+    ObjectToPersona(arrayJSON);
+    
+    arrayPersona.map(person => {
+    arrayReducido.push(person);
+        return;
+    });
+
+    DrawTableFromArray(arrayReducido); 
+</script>
 </html>
