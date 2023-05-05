@@ -6,8 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<script>
-</script>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #0060aa;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    input[type="button"] {
+        padding: 5px 10px;
+        background-color: #0060aa;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    select, input[type="text"], input[type="number"] {
+        width: 200px;
+        padding: 5px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    label {
+        display: inline-block;
+        width: 100px;
+        margin-right: 10px;
+    }
+</style>
 <body>
 
     <form id="frmShow">
@@ -68,7 +106,7 @@
 
     <form style="display: none;" id="frmAdd">
         <label>Formulario ABM</label>
-        <div><label>ID</label><input type="number" id="txtAddId"></div>
+        <div><label>ID</label><input type="number" id="txtAddId" onchange="OnIdValueChange()"></div>
         <div><label>Nombre</label><input type="text" id="txtAddName"></div>
         <div><label>Apellido</label><input type="text" id="txtAddSurname"></div>
         <div><label>Edad</label><input type="number" id="txtAddAge"></div>
@@ -84,7 +122,7 @@
         <div id="divRobs" style="display: none;"><label>Robos</label><input type="number" id="txtAddRobs"></div>
         <div id="divMurders" style="display: none;"><label>Asesinatos</label><input type="number" id="txtAddMurders"></div>
 
-        <div><input type="button" value="Agregar" onclick="NewPersona()"><input type="button" value="Modificar" onclick=""><input type="button" value="Eliminar" onclick=""><input type="button" value="Cancelar" onclick="SwitchViews()"></div>
+        <div><input type="button" value="Agregar" onclick="NewPersona()"><input type="button" value="Modificar" onclick=""><input type="button" value="Eliminar" onclick="DeletePersona()"><input type="button" value="Cancelar" onclick="SwitchViews()"></div>
         <label>* Mostrar solo los que correspondan</label><!--Estoy seguro de que este label no va, pero por si acaso-->
     </form>
 
@@ -224,6 +262,58 @@
             }
         }
     }
+
+    function DeletePersona()
+    {
+        const txtAddId          = document.getElementById("txtAddId");
+        arrayPersona.map(person=>{
+                if(person.id == txtAddId.value)
+                {
+                    let index = arrayPersona.indexOf(person);
+                    if(index > -1)
+                    {
+                        arrayPersona.splice(index, 1);
+                        console.log("un elemento eliminado");
+                    }
+                }
+            })
+        
+        arrayReducido.map(person=>{
+                if(person.id == txtAddId.value)
+                {
+                    let index = arrayReducido.indexOf(person);
+                    if(index > -1)
+                    {
+                        arrayReducido.splice(index, 1);
+                        //console.log("un elemento eliminado");
+                    }
+                }
+            })
+
+        SwitchViews();
+        DrawTableFromArray(arrayReducido);
+    }
+
+    function ModificarPersona()
+    {
+        let idFree = true;
+        arrayPersona.map(person=>{
+        if(person.id == txtAddId.value)
+        {
+            idFree = false;
+        }
+        });
+
+        if(idFree)
+        {
+            alert("Ninguna persona con ese ID modificable");
+        }
+        else
+        {
+            DeletePersona();
+            NewPersona();
+        }
+    }
 </script>
 <!--Scripts de Render-->
 <script>
@@ -234,7 +324,6 @@
 
     function RenderCheckBoxes(checkbox)
     {
-        console.log("called");
         if (checkbox.checked) {
             const columnName = checkbox.value;
             const column = document.querySelectorAll(`.${columnName}`);
@@ -391,6 +480,47 @@
             divMurders.style.display='';   
         }
     }
+
+    function OnIdValueChange()
+    {
+        const txtAddId          = document.getElementById("txtAddId");
+        const txtAddName        = document.getElementById("txtAddName");
+        const txtAddSurname     = document.getElementById("txtAddSurname");
+        const txtAddAge         = document.getElementById("txtAddAge");
+        const cmbAddType        = document.getElementById("cmbAddType");
+        const txtAddEgo         = document.getElementById("txtAddEgo"); 
+        const txtAddCity        = document.getElementById("txtAddCity");
+        const txtAddPublished   = document.getElementById("txtAddPublished");
+        const txtAddEnemy       = document.getElementById("txtAddEnemy");
+        const txtAddRobs        = document.getElementById("txtAddRobs");
+        const txtAddMurders     = document.getElementById("txtAddMurders");
+
+        arrayPersona.map(person => {
+            if(person.id == txtAddId.value)
+            {
+                txtAddName.value = person.nombre;
+                txtAddSurname.value = person.apellido
+                txtAddAge.value = person.edad
+
+                if("alterego" in person)
+                {
+                    cmbAddType.value = "hero";
+                    SwitchLabel();
+                    txtAddEgo.value = person.alterego;
+                    txtAddCity.value = person.ciudad;
+                    txtAddPublished.value = person.publicado;
+                }
+                else if("enemigo" in person)
+                {
+                    cmbAddType.value = "villan";
+                    SwitchLabel();
+                    txtAddEnemy.value = person.enemigo;  
+                    txtAddRobs.value = person.robos;
+                    txtAddMurders.value = person.asesinatos;
+                }
+            }
+        });
+    }
 </script>
 <!--Scripts de Inicio-->
 <script>
@@ -402,5 +532,77 @@
     });
 
     DrawTableFromArray(arrayReducido); 
+</script>
+<!--Scripts de Sort (eran demasiado largos)-->
+<script>
+    const idButton = document.querySelector('#theadPersonas th input[value="ID"]');
+    idButton.addEventListener('click', () => {
+        sortTable('id');
+    });
+    const nameButton = document.querySelector('#theadPersonas th input[value="Nombre"]');
+    nameButton.addEventListener('click', () => {
+        sortTable('nombre');
+    });
+    const surnameButton = document.querySelector('#theadPersonas th input[value="Apellido"]');
+    surnameButton.addEventListener('click', () => {
+        sortTable('apellido');
+    });
+    const ageButton = document.querySelector('#theadPersonas th input[value="Edad"]');
+    ageButton.addEventListener('click', () => {
+        sortTable('edad');
+    });
+    const egoButton = document.querySelector('#theadPersonas th input[value="AlterEgo"]');
+    egoButton.addEventListener('click', () => {
+        sortTable('alterego');
+    });
+    const cityButton = document.querySelector('#theadPersonas th input[value="Ciudad"]');
+    cityButton.addEventListener('click', () => {
+        sortTable('ciudad');
+    });
+    const publishedButton = document.querySelector('#theadPersonas th input[value="Publicado"]');
+    publishedButton.addEventListener('click', () => {
+        sortTable('publicado');
+    });
+    const enemyButton = document.querySelector('#theadPersonas th input[value="Enemigo"]');
+    enemyButton.addEventListener('click', () => {
+        sortTable('enemigo');
+    });
+    const robsButton = document.querySelector('#theadPersonas th input[value="Robos"]');
+    robsButton.addEventListener('click', () => {
+        sortTable('robos');
+    });
+    const murdersButton = document.querySelector('#theadPersonas th input[value="Asesinatos"]');
+    murdersButton.addEventListener('click', () => {
+        sortTable('asesinatos');
+    });
+
+    let order = 1;
+
+    function sortTable(parameter) {
+        let persons = arrayPersona;
+        persons.sort((a, b) => {
+            if(parameter in a && !(parameter in b))
+            {
+                return -1*order;
+            }
+            if(parameter in b && !(parameter in a))
+            {
+                return 1*order;
+            }
+            if(!(parameter in a) && !(parameter in b))
+            {
+                return 0;
+            }
+            if(a[parameter] < b[parameter]) {
+                return -1*order;
+            } else if (a[parameter] > b[parameter]) {
+                return 1*order;
+            } else {
+                return 0;
+            };
+        });
+        order *=-1;
+        DrawTableFromArray(persons);
+    };
 </script>
 </html>
