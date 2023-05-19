@@ -80,7 +80,7 @@
         </div>
 
         <div>
-            <table>
+            <table id="tableABM">
                 <thead id = "theadPersonas">
                     <tr>
                         <th class="id"><input type="button" value="ID"></th>
@@ -101,7 +101,7 @@
 
             </table>
         </div>
-        <div><input type="button" value="Agregar" onclick="SwitchViews()"></div>
+        <div><input type="button" value="Agregar" onclick="SwitchViews(true,false,false)"></div>
     </form>
 
     <form style="display: none;" id="frmAdd">
@@ -122,7 +122,7 @@
         <div id="divRobs" style="display: none;"><label>Robos</label><input type="number" id="txtAddRobs"></div>
         <div id="divMurders" style="display: none;"><label>Asesinatos</label><input type="number" id="txtAddMurders"></div>
 
-        <div><input type="button" value="Agregar" onclick="NewPersona()"><input type="button" value="Modificar" onclick=""><input type="button" value="Eliminar" onclick="DeletePersona()"><input type="button" value="Cancelar" onclick="SwitchViews()"></div>
+        <div><input type="button" value="Agregar" onclick="NewPersona()" id="btnAgregar"><input type="button" value="Modificar" onclick="ModificarPersona()" id="btnModificar"><input type="button" value="Eliminar" onclick="DeletePersona()" id="btnEliminar"><input type="button" value="Cancelar" onclick="SwitchViews()" id="btnCancelar"></div>
         <label>* Mostrar solo los que correspondan</label><!--Estoy seguro de que este label no va, pero por si acaso-->
     </form>
 
@@ -266,14 +266,23 @@
     function DeletePersona()
     {
         const txtAddId          = document.getElementById("txtAddId");
+
+        let confirmar;
+
         arrayPersona.map(person=>{
                 if(person.id == txtAddId.value)
                 {
                     let index = arrayPersona.indexOf(person);
                     if(index > -1)
                     {
-                        arrayPersona.splice(index, 1);
-                        console.log("un elemento eliminado");
+                        confirmar = confirm("Va a eliminar la persona "+ person.nombre + ",esta seguro?");
+                        if (confirmar) {
+                            arrayPersona.splice(index, 1);
+                            console.log("un elemento eliminado");
+                        } else {
+                            console.log("no se elimino");
+                        }
+                        
                     }
                 }
             })
@@ -284,8 +293,10 @@
                     let index = arrayReducido.indexOf(person);
                     if(index > -1)
                     {
-                        arrayReducido.splice(index, 1);
-                        //console.log("un elemento eliminado");
+                        if(confirmar)
+                        {
+                            arrayReducido.splice(index, 1);
+                        }
                     }
                 }
             })
@@ -296,23 +307,61 @@
 
     function ModificarPersona()
     {
-        let idFree = true;
-        arrayPersona.map(person=>{
-        if(person.id == txtAddId.value)
-        {
-            idFree = false;
-        }
-        });
+        const txtAddId          = document.getElementById("txtAddId");
+        const cmbAddType        = document.getElementById("cmbAddType");
 
-        if(idFree)
-        {
-            alert("Ninguna persona con ese ID modificable");
-        }
-        else
-        {
-            DeletePersona();
-            NewPersona();
-        }
+        const txtAddName        = document.getElementById("txtAddName");
+        const txtAddSurname     = document.getElementById("txtAddSurname");
+        const txtAddAge         = document.getElementById("txtAddAge");
+
+        const txtAddEgo         = document.getElementById("txtAddEgo"); 
+        const txtAddCity        = document.getElementById("txtAddCity");
+        const txtAddPublished   = document.getElementById("txtAddPublished");
+        const txtAddEnemy       = document.getElementById("txtAddEnemy");
+        const txtAddRobs        = document.getElementById("txtAddRobs");
+        const txtAddMurders     = document.getElementById("txtAddMurders");
+
+        arrayPersona.map(person=>{
+                if(person.id == txtAddId.value)
+                {
+                    let index = arrayPersona.indexOf(person);
+                    if(index > -1)
+                    {
+                        confirmar = confirm("Va a modificar la persona "+ person.nombre + ",esta seguro?");
+                        if (confirmar) {
+                            if("alterego" in person && cmbAddType.value == "hero")
+                            {
+                                person.nombre = txtAddName.value;
+                                person.apellido = txtAddSurname.value;
+                                person.edad = txtAddAge.value;
+
+                                person.alterego = txtAddEgo.value;
+                                person.ciudad = txtAddCity.value;
+                                person.publicado = txtAddPublished.value;
+                            }
+                            else if("enemigo" in person && cmbAddType == "villan")
+                            {
+                                person.nombre = txtAddName.value;
+                                person.apellido = txtAddSurname.value;
+                                person.edad = txtAddAge.value;
+
+                                person.enemigo = txtAddEnemy.value;
+                                person.robos = txtAddRobs.value;
+                                person.asesinatos = txtAddMurders.value;
+                            }
+                            else
+                            {
+                                console.log("no se pudo modificar");
+                            }
+                        } else {
+                            console.log("no se modifico");
+                        }
+                        
+                    }
+                }
+            })
+            SwitchViews();
+            DrawTableFromArray(arrayReducido);
     }
 </script>
 <!--Scripts de Render-->
@@ -430,10 +479,52 @@
         txtEdad.value = Math.round(val/arrayReducido.length);
     }
 
-    function SwitchViews()
+    function SwitchViews(agregar = true, modificar = true, eliminar = true, cancelar = true)
     {
         const frmShow = document.getElementById("frmShow");
         const frmAdd = document.getElementById("frmAdd");
+
+        const btnAgregar = document.getElementById("btnAgregar");
+        const btnModificar = document.getElementById("btnModificar");
+        const btnEliminar = document.getElementById("btnEliminar");
+        const btnCancelar = document.getElementById("btnCancelar");
+        
+        if(agregar)
+        {
+            btnAgregar.style.display = "";
+        }
+        else
+        {
+            btnAgregar.style.display = "none";
+        }
+
+        if(modificar)
+        {
+            btnModificar.style.display = "";
+        }
+        else
+        {
+            btnModificar.style.display = "none";
+        }
+
+        if(eliminar)
+        {
+            btnEliminar.style.display = "";
+        }
+        else
+        {
+            btnEliminar.style.display = "none";
+        }
+
+        if(cancelar)
+        {
+            btnCancelar.style.display = "";
+        }
+        else
+        {
+            btnCancelar.style.display = "none";
+        }
+
          if(switchStatus==0)
          {
             switchStatus = 1;
@@ -481,7 +572,7 @@
         }
     }
 
-    function OnIdValueChange()
+    function OnIdValueChange(selectedId = "")
     {
         const txtAddId          = document.getElementById("txtAddId");
         const txtAddName        = document.getElementById("txtAddName");
@@ -495,12 +586,25 @@
         const txtAddRobs        = document.getElementById("txtAddRobs");
         const txtAddMurders     = document.getElementById("txtAddMurders");
 
+        let idValue;
+        if(selectedId == "")
+        {   
+            idValue = txtAddId.value
+        }
+        else
+        {
+            idValue = selectedId;
+        }
+
+        console.log(idValue);
+
         arrayPersona.map(person => {
-            if(person.id == txtAddId.value)
+            if(person.id == idValue)
             {
                 txtAddName.value = person.nombre;
-                txtAddSurname.value = person.apellido
-                txtAddAge.value = person.edad
+                txtAddSurname.value = person.apellido;
+                txtAddAge.value = person.edad;
+                txtAddId.value = person.id;
 
                 if("alterego" in person)
                 {
@@ -604,5 +708,22 @@
         order *=-1;
         DrawTableFromArray(persons);
     };
+</script>
+<!-- Scripts de mejora y correccion-->
+<script>
+    const OpenModification = e => {
+        if (e.target.parentNode.parentNode.tagName === 'TBODY')
+        {
+            const idSeleccionado = e.target.parentNode.querySelector('td.id').textContent.trim();
+            SwitchViews(false);
+            OnIdValueChange(idSeleccionado);
+        }
+    };
+
+
+    const tableABM = document.getElementById("tableABM");
+    tableABM.addEventListener('dblclick', OpenModification);
+
+
 </script>
 </html>
