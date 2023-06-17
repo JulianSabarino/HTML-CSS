@@ -107,86 +107,66 @@
     background-color: rgba(0, 0, 0, 0.3);
     flex-direction: column; 
 }
+
+.flex-title
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;  
+    flex-direction: column;
+    color:#010101;
+    font-size: 2vw;
+}
 </style>
 
 <body onload="OnLoadProgram()">
 
     <form id="frmShow">
-        <label>Form Datos</label>
-        <div>
-            <label>Filtrar Por:</label>
-            <select onchange="OnFilterChange()" id="TypeFilter">
-                <option value="all">Todos</option>
-                <option value="hero">Heroes</option>
-                <option value="villan">Villanos</option>
-            </select>
-        </div>
-
-        <div>
-            <label>Calcular Edad Promedio:</label>
-            <input type="text" id="txtPromAge">
-            <input type="button" value="Calcular" onclick="OnAgeClick()">
-        </div>
-
-        <label>Mostrar Columnas</label>
-        <div>
-            <input type="checkbox" value="id" checked="true" id="chkbId">ID
-            <input type="checkbox" value="name" checked="true">Nombre
-            <input type="checkbox" value="surename" checked="true">Apellido
-            <input type="checkbox" value="age" checked="true">Edad
-            <input type="checkbox" value="ego" checked="true">AlterEgo
-            <input type="checkbox" value="city" checked="true">Ciudad
-            <input type="checkbox" value="published" checked="true">Publicado
-            <input type="checkbox" value="enemy" checked="true">Enemigo
-            <input type="checkbox" value="robs" checked="true">Robos
-            <input type="checkbox" value="murders" checked="true">Asesinatos
-        </div>
-
+        <div class="flex-title"><label>FormDatos</label></div>
         <div>
             <table id="tableABM">
-                <thead id = "theadPersonas">
+                <thead id = "theadVehiculo">
                     <tr>
                         <th class="id"><input type="button" value="ID"></th>
-                        <th class="name"><input type="button" value="Nombre"></th>
-                        <th class="surename"><input type="button" value="Apellido"></th>
-                        <th class="age"><input type="button" value="Edad"></th>
-                        <th class="ego"><input type="button" value="AlterEgo"></th>
-                        <th class="city"><input type="button" value="Ciudad"></th>
-                        <th class="published"><input type="button" value="Publicado"></th>
-                        <th class="enemy"><input type="button" value="Enemigo"></th>
-                        <th class="robs"><input type="button" value="Robos"></th>
-                        <th class="murders"><input type="button" value="Asesinatos"></th>
+                        <th class="modelo"><input type="button" value="Modelo"></th>
+                        <th class="anoFab"><input type="button" value="A;o Fabricacion"></th>
+                        <th class="velMax"><input type="button" value="Vel Maxima"></th>
+                        <th class="altMax"><input type="button" value="Alt Maxima"></th>
+                        <th class="autonomia"><input type="button" value="Autonomia"></th>
+                        <th class="cantPue"><input type="button" value="Cant Puertas"></th>
+                        <th class="cantRue"><input type="button" value="Cant Ruedas"></th>
+                        <th class="modificar"><input type="button" value="Modificar"></th>
+                        <th class="eliminar"><input type="button" value="Eliminar"></th>
                     </tr>
                 </thead>
 
-                <tbody id = "tbodyPersonas">
+                <tbody id = "tbodyVehiculo">
                 </tbody>
 
             </table>
         </div>
-        <div><input type="button" value="Agregar" onclick="SwitchViews(true,false,false)"></div>
+        <div><input type="button" value="Agregar" onclick="SwitchViews()"></div>
     </form>
     <div class="flex">
         <form style="display: none;" id="frmAdd">
             <label>Formulario ABM</label>
             <div><label>ID</label><input type="number" id="txtAddId" onchange="OnIdValueChange()" readonly></div>
-            <div><label>Nombre</label><input type="text" id="txtAddName"></div>
-            <div><label>Apellido</label><input type="text" id="txtAddSurname"></div>
-            <div><label>Edad</label><input type="number" id="txtAddAge"></div>
+            <div><label>Modelo</label><input type="text" id="txtAddModelo"></div>
+            <div><label>Ano Fabricacion</label><input type="number" id="txtAddAno"></div>
+            <div><label>Vel Maxima</label><input type="number" id="txtAddVel"></div>
             <div><label>Tipo</label>
                 <select id="cmbAddType" onchange="SwitchLabel()">
-                    <option value="hero">Heroe</option>
-                    <option value="villan">Villano</option>
+                    <option value="aereo">Aereo</option>
+                    <option value="terrestre">Terrestre</option>
             </select></div>
-            <div id="divEgo"><label>AlterEgo</label><input type="text" id="txtAddEgo"></div>
-            <div id="divCity"><label>Ciudad</label><input type="text" id="txtAddCity"></div>
-            <div id="divPublished"><label>Publicado</label><input type="number" id="txtAddPublished"></div>
-            <div id="divEnemy" style="display: none;"><label>Enemigo</label><input type="text" id="txtAddEnemy"></div>
-            <div id="divRobs" style="display: none;"><label>Robos</label><input type="number" id="txtAddRobs"></div>
-            <div id="divMurders" style="display: none;"><label>Asesinatos</label><input type="number" id="txtAddMurders"></div>
+            <div id="divAlt"><label>Altura Maxima</label><input type="number" id="txtAddAlt"></div>
+            <div id="divAutonomia"><label>Autonomia</label><input type="number" id="txtAddAuto"></div>
+            <div id="divPuertas" style="display: none;"><label>Puertas</label><input type="number" id="txtAddPuertas"></div>
+            <div id="divRuedas" style="display: none;"><label>Robos</label><input type="number" id="txtAddRuedas"></div>
 
-            <div><input type="button" value="Agregar" onclick="OnAltaClick()" id="btnAgregar"><input type="button" value="Modificar" onclick="OnModifyClick()" id="btnModificar"><input type="button" value="Eliminar" onclick="OnDeleteClick()" id="btnEliminar"><input type="button" value="Cancelar" onclick="SwitchViews()" id="btnCancelar"></div>
-            <label>* Mostrar solo los que correspondan</label><!--Estoy seguro de que este label no va, pero por si acaso-->
+            <div><input type="button" value="Agregar" onclick="OnAltaClick()" id="btnAgregar"><input type="button" value="Modificar" onclick="OnModifyClick()" id="btnModificar"><input type="button" value="Cancelar" onclick="SwitchViews()" id="btnCancelar"></div>
         </form>
     </div>
 <!--crear un flexbox-->
@@ -200,62 +180,71 @@
 <script>
     const jsonInicial = "";
     var arrayJSON;
-    const arrayPersona = [];
+    const arrayVehiculo = [];
     const arrayReducido = [];
     let currentID=0;
+    let switchStatus = 0;
 
-    class Persona
+    const txtAddId          = document.getElementById("txtAddId");
+    const txtAddModelo      = document.getElementById("txtAddModelo");
+    const txtAddAno         = document.getElementById("txtAddAno");
+    const txtAddVel         = document.getElementById("txtAddVel");
+    const cmbAddType        = document.getElementById("cmbAddType");
+    const txtAddAlt         = document.getElementById("txtAddAlt"); 
+    const txtAddAuto        = document.getElementById("txtAddAuto");
+    const txtAddPuertas     = document.getElementById("txtAddPuertas");
+    const txtAddRuedas      = document.getElementById("txtAddRuedas");
+
+    class Vehiculo
     {
-        constructor(id,name,surname,age)
+        constructor(id,modelo,anoFab,velMax)
         {
             this.id = id;
-            this.nombre = name;
-            this.apellido = surname;
-            this.edad = age;
+            this.modelo = modelo;
+            this.anoFab = anoFab;
+            this.velMax = velMax;
         };
     };
 
-    class Heroe extends Persona
+    class Aereo extends Vehiculo
     {
-        constructor(id,name,surname,age,ego,city,published)
+        constructor(id,modelo,anoFab,velMax,altMax,autonomia)
         {
-            super(id,name,surname,age);
-            this.alterego = ego;
-            this.ciudad = city;
-            this.publicado = published;
+            super(id,modelo,anoFab,velMax);
+            this.altMax = altMax;
+            this.autonomia = autonomia;
         };
     };
 
-    class Villano extends Persona
+    class Terrestre extends Vehiculo
     {
-        constructor(id,name,surname,age,enemy,robs,murders)
+        constructor(id,modelo,anoFab,velMax,cantPue,cantRue)
         {
-            super(id,name,surname,age);
-            this.enemigo = enemy;
-            this.robos = robs;
-            this.asesinatos = murders;
+            super(id,modelo,anoFab,velMax);
+            this.cantPue = cantPue;
+            this.cantRue = cantRue;
         };
     };
 
-    function ObjectToPersona(array)
+    function ObjectToVehiculo(array)
     {
-        let hero;
-        let villan;
+        let aereo;
+        let terrestre;
 
-        array.map(person=>{
-            if("alterego" in person)
+        array.map(vehiculo=>{
+            if("autonomia" in vehiculo)
             {
-                hero = new Heroe(person.id,person.nombre,person.apellido,person.edad,person.alterego,person.ciudad,person.publicado);
-                arrayPersona.push(hero);
+                aereo = new Aereo(vehiculo.id,vehiculo.modelo,vehiculo.anoFab,vehiculo.velMax,vehiculo.altMax,vehiculo.autonomia);
+                arrayVehiculo.push(aereo);
             }
-            else if("enemigo" in person)
+            else if("cantRue" in vehiculo)
             {   
-                villan = new Villano(person.id,person.nombre,person.apellido,person.edad,person.enemigo,person.robos,person.asesinatos);
-                arrayPersona.push(villan)
+                terrestre = new Terrestre(vehiculo.id,vehiculo.modelo,vehiculo.anoFab,vehiculo.velMax,vehiculo.cantPue,vehiculo.cantRue);
+                arrayVehiculo.push(terrestre)
             }
-            if(person.id > currentID)
+            if(vehiculo.id > currentID)
             {
-                currentID = person.id;
+                currentID = vehiculo.id;
             }
             return
         })
@@ -435,6 +424,7 @@
 </script>
 <!--Scripts de Render-->
 <script>
+    /*
     const checkboxes = document.querySelectorAll('#frmShow input[type="checkbox"]');
     let switchStatus = 0;
 
@@ -454,48 +444,58 @@
             column.forEach((cell) => {
             cell.style.display = 'none';
         })}
-    }
+    }*/
 
     function DrawTableFromArray(array)
     {
-        let tabla = document.getElementById("tbodyPersonas");
+        let tabla = document.getElementById("tbodyVehiculo");
         tabla.innerHTML = '';
-        array.map(person=>{
+        array.map(vehiculo=>{
             const tr = document.createElement('tr');
             let row = `
-                <td class="id">${person.id}</td>
-                <td class="name">${person.nombre}</td>
-                <td class="surename">${person.apellido}</td>
-                <td class="age">${person.edad}</td>
+                <td class="id">${vehiculo.id}</td>
+                <td class="modelo">${vehiculo.modelo}</td>
+                <td class="anoFab">${vehiculo.anoFab}</td>
+                <td class="velMax">${vehiculo.velMax}</td>
             `
-            if("alterego" in person)
+            if("autonomia" in vehiculo)
             {
                 row += `
-                <td class="ego">${person.alterego}</td>
-                <td class="city">${person.ciudad}</td>
-                <td class="published">${person.publicado}</td>
-                <td class="enemy">-</td>
-                <td class="robs">-</td>
-                <td class="murders">-</td>
+                <td class="autonomia">${vehiculo.autonomia}</td>
+                <td class="altMax">${vehiculo.altMax}</td>
+                <td class="cantPue">-</td>
+                <td class="cantRue">-</td>
                 `
             }
-            else if("enemigo" in person)
+            else if("cantRue" in vehiculo)
             {
                 row += `
-                <td class="ego">-</td>
-                <td class="city">-</td>
-                <td class="published">-</td>
-                <td class="enemy">${person.enemigo}</td>
-                <td class="robs">${person.robos}</td>
-                <td class="murders">${person.asesinatos}</td>
+                <td class="autonomia">-</td>
+                <td class="altMax">-</td>
+                <td class="cantPue">${vehiculo.cantPue}</td>
+                <td class="cantRue">${vehiculo.cantRue}</td>
                 `
             }
+            row += `
+            <td class="modificar"><input type="button" value="Modificar"></td>
+            <td class="eliminar"><input type="button" value="Eliminar"></td>            
+            `
             tr.innerHTML = row;
             tabla.append(tr);
-        })
-        checkboxes.forEach((checkbox) => RenderCheckBoxes(checkbox));
-    }
 
+            const eliminarBtn = tr.querySelector('.eliminar input');
+            eliminarBtn.addEventListener('click', () => {
+                DeleteVehiculo(tr)
+            })
+
+            const modificarBtn = tr.querySelector('.modificar input');
+            modificarBtn.addEventListener('click', () => {
+                ModificarVehiculo(tr)
+            })
+        })
+    }
+    
+    /*
     function OnFilterChange()
     {
         let cmbType = document.getElementById("TypeFilter");
@@ -536,19 +536,9 @@
         DrawTableFromArray(arrayReducido);
     }
 
-    function OnAgeClick()
-    {
-        
-        let val = arrayReducido.reduce((accumulator, person)=>
-        {
-            return accumulator + person.edad;
-        },0);
-
-        let txtEdad = document.getElementById("txtPromAge");
-        txtEdad.value = Math.round(val/arrayReducido.length);
-    }
-
-    function SwitchViews(agregar = true, modificar = true, eliminar = true, cancelar = true)
+*/
+    //Funciona
+    function SwitchViews(agregar = true, id = 0)
     {
         const frmShow = document.getElementById("frmShow");
         const frmAdd = document.getElementById("frmAdd");
@@ -561,58 +551,51 @@
         if(agregar)
         {
             btnAgregar.style.display = "";
-            const txtAddId          = document.getElementById("txtAddId");
-            const txtAddName        = document.getElementById("txtAddName");
-            const txtAddSurname     = document.getElementById("txtAddSurname");
-            const txtAddAge         = document.getElementById("txtAddAge");
-            const cmbAddType        = document.getElementById("cmbAddType");
-            const txtAddEgo         = document.getElementById("txtAddEgo"); 
-            const txtAddCity        = document.getElementById("txtAddCity");
-            const txtAddPublished   = document.getElementById("txtAddPublished");
-            const txtAddEnemy       = document.getElementById("txtAddEnemy");
-            const txtAddRobs        = document.getElementById("txtAddRobs");
-            const txtAddMurders     = document.getElementById("txtAddMurders");
+            txtAddId.value = 0;     
+            txtAddModelo.value = " "; 
+            txtAddAno.value = 0;
+            cmbAddType.value = " ";   
+            txtAddAlt.value = 0;
+            txtAddAuto.value = 0;
+            txtAddPuertas.value = 0;
+            txtAddRuedas.value = 0;
 
-            txtAddName.value = "";
-            txtAddSurname.value = "";
-            txtAddAge.value = "";
-            txtAddEgo.value = "";
-            txtAddCity.value = "";
-            txtAddPublished.value = "";
-            txtAddEnemy.value = "";
-            txtAddRobs.value = "";
-            txtAddMurders.value = "";
+            btnAgregar.style.display = "";
+            btnModificar.style.display = "none";
+
         }
         else
         {
             btnAgregar.style.display = "none";
-        }
-
-        if(modificar)
-        {
             btnModificar.style.display = "";
         }
-        else
-        {
-            btnModificar.style.display = "none";
-        }
 
-        if(eliminar)
-        {
-            btnEliminar.style.display = "";
-        }
-        else
-        {
-            btnEliminar.style.display = "none";
-        }
+        btnCancelar.style.display = "";
 
-        if(cancelar)
+        if(id != 0)
         {
-            btnCancelar.style.display = "";
-        }
-        else
-        {
-            btnCancelar.style.display = "none";
+            arrayVehiculo.map(vehiculo=>{
+            if(vehiculo.id == id)
+            {
+                txtAddId.value = vehiculo.id;     
+                txtAddModelo.value = vehiculo.modelo; 
+                txtAddAno.value = vehiculo.anoFab;
+                txtAddVel.value = vehiculo.velMax;
+                if("autonomia" in vehiculo)
+                {
+                    cmbAddType.value = "aereo";
+                    txtAddAlt.value = vehiculo.altMax;
+                    txtAddAuto.value = vehiculo.autonomia;
+                }
+                else if("cantRue" in vehiculo)
+                {   
+                    cmbAddType.value = "terrestre";
+                    txtAddPuertas.value = vehiculo.cantPue;
+                    txtAddRuedas.value = vehiculo.cantRue;
+                }
+            }
+        })
+            SwitchLabel();
         }
 
          if(switchStatus==0)
@@ -620,8 +603,10 @@
             switchStatus = 1;
             frmShow.style.display="none";
             frmAdd.style.display="block";
-            const txtAddId = document.getElementById("txtAddId");
-            txtAddId.value = currentID+1;
+            if(agregar)
+            {
+                txtAddId.value = currentID+1;
+            }
          }
          else
          {
@@ -631,37 +616,31 @@
          }
          console.log(switchStatus);
     }
-
+    //Funciona
     function SwitchLabel()
     {
         const cmbAddType = document.getElementById("cmbAddType");
-        const divEgo = document.getElementById("divEgo");        
-        const divCity = document.getElementById("divCity");
-        const divPublished = document.getElementById("divPublished");
-        const divEnemy = document.getElementById("divEnemy");
-        const divRobs = document.getElementById("divRobs");
-        const divMurders = document.getElementById("divMurders");        
+        const divAlt = document.getElementById("divAlt");        
+        const divAutonomia = document.getElementById("divAutonomia");
+        const divPuertas = document.getElementById("divPuertas");
+        const divRuedas = document.getElementById("divRuedas"); 
 
-        if(cmbAddType.value == "hero")
+        if(cmbAddType.value == "aereo")
         {
-            divEgo.style.display='';
-            divCity.style.display='';
-            divPublished.style.display='';
-            divEnemy.style.display="none";
-            divRobs.style.display="none";
-            divMurders.style.display="none";
+            divAlt.style.display='';
+            divAutonomia.style.display='';
+            divPuertas.style.display="none";
+            divRuedas.style.display="none";
         }
-        else if(cmbAddType.value == "villan")
+        else if(cmbAddType.value == "terrestre")
         {
-            divEgo.style.display="none";
-            divCity.style.display="none";
-            divPublished.style.display="none";
-            divEnemy.style.display='';
-            divRobs.style.display='';
-            divMurders.style.display='';   
+            divAlt.style.display="none";
+            divAutonomia.style.display="none";
+            divPuertas.style.display=''; 
+            divRuedas.style.display='';
         }
     }
-
+/*
     function OnIdValueChange(selectedId = "")
     {
         const txtAddId          = document.getElementById("txtAddId");
@@ -715,6 +694,7 @@
             }
         });
     }
+    */
 </script>
 <!--Scripts de Inicio-->
 <script>
@@ -731,43 +711,71 @@
 </script>
 <!--Scripts de Sort (eran demasiado largos)-->
 <script>
-    const idButton = document.querySelector('#theadPersonas th input[value="ID"]');
+    function DeleteVehiculo(row)
+    {
+        //var row = this.parentNode.parentNode;
+        var index = row.rowIndex;
+        var id = row.querySelector('td.id').textContent.trim()
+        console.log(id);
+        OnDeleteClick(id);
+    };
+
+    function ModificarVehiculo(row)
+    {
+        //var row = this.parentNode.parentNode;
+        var index = row.rowIndex;
+        var id = row.querySelector('td.id').textContent.trim()
+        SwitchViews(false,id);
+        console.log(id);
+    };
+    
+    /*
+    let rows = document.querySelectorAll('tbodyVehiculo input[value="Modificar"]');
+
+    rows.forEach((row) => {
+    let button = row.querySelector('.button');
+    button.addEventListener('click', function() {
+        console.log("funciona");
+    });
+    });*/
+    /*
+    const idButton = document.querySelector('#theadVehiculos th input[value="ID"]');
     idButton.addEventListener('click', () => {
         sortTable('id');
     });
-    const nameButton = document.querySelector('#theadPersonas th input[value="Nombre"]');
+    const nameButton = document.querySelector('#theadVehiculos th input[value="Nombre"]');
     nameButton.addEventListener('click', () => {
         sortTable('nombre');
     });
-    const surnameButton = document.querySelector('#theadPersonas th input[value="Apellido"]');
+    const surnameButton = document.querySelector('#theadVehiculos th input[value="Apellido"]');
     surnameButton.addEventListener('click', () => {
         sortTable('apellido');
     });
-    const ageButton = document.querySelector('#theadPersonas th input[value="Edad"]');
+    const ageButton = document.querySelector('#theadVehiculos th input[value="Edad"]');
     ageButton.addEventListener('click', () => {
         sortTable('edad');
     });
-    const egoButton = document.querySelector('#theadPersonas th input[value="AlterEgo"]');
+    const egoButton = document.querySelector('#theadVehiculos th input[value="AlterEgo"]');
     egoButton.addEventListener('click', () => {
         sortTable('alterego');
     });
-    const cityButton = document.querySelector('#theadPersonas th input[value="Ciudad"]');
+    const cityButton = document.querySelector('#theadVehiculos th input[value="Ciudad"]');
     cityButton.addEventListener('click', () => {
         sortTable('ciudad');
     });
-    const publishedButton = document.querySelector('#theadPersonas th input[value="Publicado"]');
+    const publishedButton = document.querySelector('#theadVehiculos th input[value="Publicado"]');
     publishedButton.addEventListener('click', () => {
         sortTable('publicado');
     });
-    const enemyButton = document.querySelector('#theadPersonas th input[value="Enemigo"]');
+    const enemyButton = document.querySelector('#theadVehiculos th input[value="Enemigo"]');
     enemyButton.addEventListener('click', () => {
         sortTable('enemigo');
     });
-    const robsButton = document.querySelector('#theadPersonas th input[value="Robos"]');
+    const robsButton = document.querySelector('#theadVehiculos th input[value="Robos"]');
     robsButton.addEventListener('click', () => {
         sortTable('robos');
     });
-    const murdersButton = document.querySelector('#theadPersonas th input[value="Asesinatos"]');
+    const murdersButton = document.querySelector('#theadVehiculos th input[value="Asesinatos"]');
     murdersButton.addEventListener('click', () => {
         sortTable('asesinatos');
     });
@@ -799,10 +807,13 @@
         });
         order *=-1;
         DrawTableFromArray(persons);
+        
     };
+    */
 </script>
 <!-- Scripts de mejora y correccion-->
 <script>
+
     const OpenModification = e => {
         if (e.target.parentNode.parentNode.tagName === 'TBODY')
         {
@@ -835,10 +846,55 @@ function SwitchLoad()
     }
 }
 
+//No Funciona
+/*
+function OnLoadProgram()
+{
+    fetch('http://localhost/vehiculoAereoTerrestre.php', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then((response) => {
+                    console.log(JSON.parse(response));
+                    if (response.status === 200 || response.ok) {
+                        console.log("Response json: " + JSON.parse(response))
+                        return response.json();
+                    } else {
+                        throw new Error('Error al realizar el alta');
+                    }
+                    
+                })
+                .then(function (data) {
+                    console.log("Data: " + data)
+                    arrayJSON = JSON.parse(data);
+                    console.log(arrayJSON);
+
+                    ObjectToVehiculo(arrayJSON);
+                    arrayVehiculo.map(person => {
+                    arrayReducido.push(person);
+                        return;
+                    });
+                    console.log(arrayVehiculo);
+
+                    DrawTableFromArray(arrayReducido);
+
+                    SwitchLoad();
+
+                })
+                .catch(function (error) {
+                    // Mostrar una advertencia en caso de error
+                    console.log('Error al realizar el alta: ' + error.message);
+                    SwitchLoad();
+                });
+}*/
+
+//funciona
 function OnLoadProgram()
 {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost/PersonasEmpleadosClientes.php',false);//false para sincronico
+    xhr.open('GET', 'http://localhost/vehiculoAereoTerrestre.php',false);//false para sincronico
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
     if (xhr.status === 200) {
@@ -847,11 +903,12 @@ function OnLoadProgram()
         //arrayJSON = data;
         console.log(arrayJSON);
         
-        ObjectToPersona(arrayJSON);
-        arrayPersona.map(person => {
+        ObjectToVehiculo(arrayJSON);
+        arrayVehiculo.map(person => {
         arrayReducido.push(person);
             return;
         });
+        console.log(arrayVehiculo);
 
         DrawTableFromArray(arrayReducido);
 
@@ -863,6 +920,162 @@ function OnLoadProgram()
     //console.log(arrayJSON);
 }
 
+//funciona
+function OnAltaClick()
+{
+    const cmbAddType        = document.getElementById("cmbAddType");
+    if(txtAddId.value > 0 && txtAddModelo.value != " " && txtAddAno.value > 0 && txtAddVel.value > 0 && ((txtAddAlt.value > 0 && txtAddAuto.value > 0) || (txtAddPuertas.value > 0 && txtAddRuedas.value > 0)))
+    {
+        let v = {
+            id: 0
+        };
+
+        if (cmbAddType.value == "aereo") {
+                v = {
+                    modelo: txtAddModelo.value,
+                    anoFab: txtAddAno.value,
+                    velMax: txtAddVel.value,
+                    altMax: txtAddAlt.value,
+                    autonomia: txtAddAuto.value
+                };
+            } else if (cmbAddType.value == "terrestre") {
+                v = {
+                    modelo: txtAddModelo.value,
+                    anoFab: txtAddAno.value,
+                    velMax: txtAddVel.value,
+                    cantPue: txtAddPuertas.value,
+                    cantRue: txtAddRuedas.value
+                };
+            } else {
+                console.log("ERROR");
+            }
+            SwitchLoad();
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('PUT', 'http://localhost/vehiculoAereoTerrestre.php',false);//false para sincronico
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {//onreadystatechange/onload
+                if (xhr.status === 200) {
+                    
+                    let vehID = JSON.parse(xhr.responseText);
+                    v.id = vehID.id;
+                    console.log(v);
+
+                    if("autonomia" in v)
+                    {
+                        let aereo = new Aereo(v.id,v.modelo,v.anoFab,v.velMax,v.altMax,v.autonomia);
+                        arrayVehiculo.push(aereo);
+                        arrayReducido.push(aereo);
+                    }
+                    else if("cantRue" in v)
+                    {   
+                        let terrestre = new Terrestre(v.id,v.modelo,v.anoFab,v.velMax,v.cantPue,v.cantRue);
+                        arrayVehiculo.push(terrestre);
+                        arrayReducido.push(terrestre);
+                    }
+
+                    DrawTableFromArray(arrayReducido);
+
+
+                }
+                SwitchLoad();
+                SwitchViews();
+            };
+            xhr.send(JSON.stringify(v));
+
+
+    }else
+    {
+        console.log("ERROR")
+    }
+}
+
+function OnModifyClick() {
+       
+        let v = {
+            id:0
+        };
+
+        if (cmbAddType.value == "aereo") {
+                v = {
+                    id: txtAddId.value,
+                    modelo: txtAddModelo.value,
+                    anoFab: txtAddAno.value,
+                    velMax: txtAddVel.value,
+                    altMax: txtAddAlt.value,
+                    autonomia: txtAddAuto.value
+                };
+            } else if (cmbAddType.value == "terrestre") {
+                v = {
+                    id: txtAddId.value,
+                    modelo: txtAddModelo.value,
+                    anoFab: txtAddAno.value,
+                    velMax: txtAddVel.value,
+                    cantPue: txtAddPuertas.value,
+                    cantRue: txtAddRuedas.value
+                };
+            } else {
+                console.log("ERROR");
+            }
+
+            let vehiculoJson = JSON.stringify(v);
+
+            console.log(v);
+
+            let confirmar = confirm("Va a modificar la vehiculoa "+ v.id + ",esta seguro?");
+
+            SwitchLoad();
+            SwitchViews();
+
+            fetch('http://localhost/vehiculoAereoTerrestre.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: vehiculoJson
+            })
+                .then((response) => {
+                    if (response.status === 200 || response.ok) {
+                        console.log("Response json: " + response)
+                        return response;
+                    } else {
+                        throw new Error('Error al realizar la modificacion');
+                    }
+                })
+                .then(function (data) {
+
+                    if(confirmar)
+                    {
+                        arrayVehiculo.map(vehiculo=>{
+                            if(vehiculo.id == v.id)
+                            {
+                                vehiculo.velMax = v.velMax;
+                            }
+                        });
+
+                        arrayReducido.map(vehiculo=>{
+                            if(vehiculo.id == v.id)
+                            {
+                                vehiculo.velMax = v.velMax;
+                            }
+                        })
+
+
+                    }
+
+                    console.log("ok");
+                    DrawTableFromArray(arrayReducido);
+                    SwitchLoad();
+
+                })
+                .catch(function (error) {
+                    // Mostrar una advertencia en caso de error
+                    console.log('Error al realizar la modificacion: ' + error.message);
+                    SwitchLoad();
+                });
+        }
+
+/*
 function OnAltaClick() {
         const txtAddId          = document.getElementById("txtAddId");
         const txtAddName        = document.getElementById("txtAddName");
@@ -1059,42 +1272,43 @@ function OnAltaClick() {
         xhttp.send(JSON.stringify(p));
         
     }
+*/
 
-    function OnDeleteClick()
+//funciona
+    function OnDeleteClick(idVehiculo)
     {
         //funciona
-        const txtAddId          = document.getElementById("txtAddId");
         let p = {
-                id: txtAddId.value
+                id: idVehiculo
             };
 
         let confirmar;
         let index;
 
-        arrayPersona.map(person=>{
-            if(person.id == txtAddId.value)
+        arrayVehiculo.map(vehiculo=>{
+            if(vehiculo.id == idVehiculo)
             {
-                index = arrayPersona.indexOf(person);
+                index = arrayVehiculo.indexOf(vehiculo);
                 if(index > -1)
                 {
-                    confirmar = confirm("Va a eliminar la persona "+ person.nombre + ",esta seguro?");
+                    confirmar = confirm("Va a eliminar la vehiculoa "+ vehiculo.id + ",esta seguro?");
                 }
             }
         }) 
         SwitchLoad();
 
         var xhr = new XMLHttpRequest();
-        xhr.open('DELETE', 'http://localhost/PersonasEmpleadosClientes.php',false);//false para sincronico
+        xhr.open('DELETE', 'http://localhost/vehiculoAereoTerrestre.php',true);//false para sincronico
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function() {//onreadystatechange/onload
             if (xhr.status === 200 && confirmar) {
 
-                arrayPersona.splice(index, 1);
+                arrayVehiculo.splice(index, 1);
 
-                arrayReducido.map(person=>{
-                    if(person.id == txtAddId.value)
+                arrayReducido.map(vehiculo=>{
+                    if(vehiculo.id == idVehiculo)
                     {
-                        let index = arrayReducido.indexOf(person);
+                        let index = arrayReducido.indexOf(vehiculo);
                         if(index > -1)
                         {
                             arrayReducido.splice(index, 1);
@@ -1106,8 +1320,11 @@ function OnAltaClick() {
 
 
             }
+            else
+            {
+                console.log("No se puede elimiar")
+            }
             SwitchLoad();
-            SwitchViews();
         };
         xhr.send(JSON.stringify(p));
     }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+  .loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.loader img {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
+
+<body>
+    <div class="loader-wrapper">
+        <div class="loader">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Superman_S_symbol.svg/1280px-Superman_S_symbol.svg.png" style="height: 100px;">
+        </div>
+    </div>
+</body>
+
+<script>
+    $( document ).ready(function() {
+    $('.loader-wrapper').addClass('show');
+    setTimeout(function(){
+        $('.loader-wrapper').removeClass('show');
+        $('.loader-wrapper').addClass('hide');
+    },3000);
+});
+</script>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.loader {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  animation: spin 1s linear infinite;
+
+  border-top: 16px solid #0060aa;
+  border-right: 16px solid #ffed10;
+  border-bottom: 16px solid #e20025;
+  border-left: 16px solid #010101;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-wrapper.show {
+  display: flex;
+  opacity: 1;
+}
+
+.loader-wrapper.hide {
+  opacity: 0;
+  display: none;
+  transition: opacity 1s ease-out;
+}
+</style>
+
+<body>
+    <div class="loader-wrapper">
+        <div class="loader">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Superman_S_symbol.svg/1280px-Superman_S_symbol.svg.png" style="height: 50px; align-self: center;">
+        </div>
+    </div>
+</body>
+
+<script>
+    /*
+    $( document ).ready(function() {
+    $('.loader-wrapper').addClass('show');
+    setTimeout(function(){
+        $('.loader-wrapper').removeClass('show');
+        $('.loader-wrapper').addClass('hide');
+    },3000);
+});
+*/
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'http://localhost/PersonasEmpleadosClientes.php');
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.onload = function() {
+  if (xhr.status === 200) {
+    var data = JSON.parse(xhr.responseText);
+    console.log(data);
+  }
+};
+xhr.send();
+
+</script>
+
+</html>
